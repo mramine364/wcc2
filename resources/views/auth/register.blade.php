@@ -61,8 +61,40 @@
                             </div>
                         </div>
 
+                        {{-- User location to retreive shops and Order them by distance --}}
+                        <div class="form-group{{ $errors->has('latitude') ? ' has-error' : '' }}">
+                            <label for="latitude" class="col-md-4 control-label">Latitude</label>
+
+                            <div class="col-md-6">
+                                <input id="latitude" type="latitude" class="form-control" name="latitude" required>
+
+                                @if ($errors->has('latitude'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('latitude') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('longitude') ? ' has-error' : '' }}">
+                            <label for="longitude" class="col-md-4 control-label">Longitude</label>
+
+                            <div class="col-md-6">
+                                <input id="longitude" type="longitude" class="form-control" name="longitude" required>
+
+                                @if ($errors->has('longitude'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('longitude') }}</strong>
+                                    </span>
+                                @endif
+                            </div>                           
+                        </div>
+                        {{--  --}}
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
+                                <button type="button" class="btn btn-default" id="get-location-btn">
+                                    Get Location
+                                </button>
                                 <button type="submit" class="btn btn-primary">
                                     Register
                                 </button>
