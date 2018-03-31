@@ -27,4 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Find a user during Api Authentication using Username Or Email
+     */
+    public function findForPassport($username){
+        return User::where('email', $username)->orWhere('name', $username)->first();
+    }
 }
