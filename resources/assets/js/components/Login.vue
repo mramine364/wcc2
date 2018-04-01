@@ -9,7 +9,7 @@
                     </div>
                     <div class="modal-body">
                         
-                        <form class="form-horizontal" method="POST" action="#" @submit.prevent>
+                        <form class="form-horizontal" method="POST" action="#" @submit.prevent="onSubmit">
 
                             <div class="form-group">
                                 <label for="username" class="col-md-4 control-label">E-Mail Or Username</label>
@@ -29,7 +29,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary" @click="onSubmit">
+                                    <button type="submit" class="btn btn-primary">
                                         Login
                                     </button>
                                 </div>

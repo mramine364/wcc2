@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li v-if="!isAuth">
-                        <a href="#">Register</a>
+                        <a href="#" v-on:click="showRegistrationForm">Register</a>
                     </li>
 
                     <li class="dropdown" v-if="isAuth">
@@ -53,6 +53,7 @@
         </div>
     </nav>
     <login></login>
+    <register></register>
 </div>
 </template>
 
@@ -78,6 +79,10 @@
             showLoginForm(){
                 console.log('showLoginForm')
                 $('#login-modal').modal('show')
+            },
+            showRegistrationForm(){
+                console.log('showRegistrationForm')
+                $('#register-modal').modal('show')
             }
         }
     }
