@@ -72,6 +72,7 @@ export default {
                 that.$parent.isAuth = true
                 that.$parent.user.name = that.username
                 that.password = that.username = ""
+                $('#login-modal').modal('hide')
             })
             .catch(function (error) {
                 console.log(error);

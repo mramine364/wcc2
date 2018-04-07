@@ -43588,9 +43588,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 localStorage.setItem('expires_in', response.data.expires_in);
                 localStorage.setItem('access_token', response.data.access_token);
                 localStorage.setItem('refresh_token', response.data.refresh_token);
+                localStorage.setItem('username', that.username);
+                localStorage.setItem('saved_in', new Date().getTime());
                 that.$parent.isAuth = true;
                 that.$parent.user.name = that.username;
                 that.password = that.username = "";
+                $('#login-modal').modal('hide');
             }).catch(function (error) {
                 console.log(error);
             });
@@ -43915,6 +43918,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         onSubmit: function onSubmit() {
             console.log('onsubmit\n', this.name, this.email, this.password, this.password_confirmation, this.latitude, this.longitude);
+            var that = this;
+            axios({
+                method: 'post',
+                url: '/web_coding_challenge2/public/api-register',
+                data: {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.password_confirmation,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
+            }).then(function (response) {
+                console.log(response);
+                if (response.data.access_token) {
+                    localStorage.setItem('token_type', response.data.token_type);
+                    localStorage.setItem('expires_in', response.data.expires_in);
+                    localStorage.setItem('access_token', response.data.access_token);
+                    localStorage.setItem('refresh_token', response.data.refresh_token);
+                    localStorage.setItem('username', that.username);
+                    localStorage.setItem('saved_in', new Date().getTime());
+                    that.$parent.isAuth = true;
+                    that.$parent.user.name = that.name;
+
+                    that.name = that.email = that.password = that.password_confirmation = "";
+                    that.latitude = that.longitude = "";
+                    // $('#createLabelModal .modal-backdrop').trigger('click')
+                    $('#register-modal').modal('hide');
+                } else {
+                    // show errors
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         getLocation: function getLocation() {
             console.log('getLocation.');
@@ -43986,7 +44023,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { id: "name", type: "text", required: "" },
+                          attrs: { id: "name", type: "text" },
                           domProps: { value: _vm.name },
                           on: {
                             input: function($event) {
@@ -44021,7 +44058,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: { id: "email", type: "email", required: "" },
+                          attrs: { id: "email", type: "email" },
                           domProps: { value: _vm.email },
                           on: {
                             input: function($event) {
@@ -44056,11 +44093,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            id: "password2",
-                            type: "password",
-                            required: ""
-                          },
+                          attrs: { id: "password2", type: "password" },
                           domProps: { value: _vm.password },
                           on: {
                             input: function($event) {
@@ -44095,11 +44128,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            id: "password-confirm",
-                            type: "password",
-                            required: ""
-                          },
+                          attrs: { id: "password-confirm", type: "password" },
                           domProps: { value: _vm.password_confirmation },
                           on: {
                             input: function($event) {
@@ -44134,11 +44163,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            id: "latitude",
-                            type: "latitude",
-                            required: ""
-                          },
+                          attrs: { id: "latitude", type: "latitude" },
                           domProps: { value: _vm.latitude },
                           on: {
                             input: function($event) {
@@ -44173,11 +44198,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            id: "longitude",
-                            type: "longitude",
-                            required: ""
-                          },
+                          attrs: { id: "longitude", type: "longitude" },
                           domProps: { value: _vm.longitude },
                           on: {
                             input: function($event) {

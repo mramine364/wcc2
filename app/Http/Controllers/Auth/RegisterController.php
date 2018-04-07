@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -48,7 +49,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'latitude' => 'required|numeric',
@@ -71,5 +72,18 @@ class RegisterController extends Controller
             'latitude' => $data['latitude'],
             'longitude' => $data['longitude'],
         ]);
+    }
+
+    public function apiUserRegistration(Request $request){
+        $validator = $this->validator($request->all());
+        
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+        
+        $user = $this->create($request->all());
+
+        return app('App\Http\Controllers\Auth\LoginController')->_apiLoginCheck($request->name, $request->password);
+
     }
 }

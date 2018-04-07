@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" v-model="name" required>
+                                <input id="name" type="text" class="form-control" v-model="name">
                             </div>
                         </div>
 
@@ -23,7 +23,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" v-model="email" required>
+                                <input id="email" type="email" class="form-control" v-model="email">
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
                             <label for="password2" class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input id="password2" type="password" class="form-control" v-model="password" required>
+                                <input id="password2" type="password" class="form-control" v-model="password">
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" v-model="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" v-model="password_confirmation">
                             </div>
                         </div>
 
@@ -48,14 +48,14 @@
                             <label for="latitude" class="col-md-4 control-label">Latitude</label>
 
                             <div class="col-md-6">
-                                <input id="latitude" type="latitude" class="form-control" v-model="latitude" required>
+                                <input id="latitude" type="latitude" class="form-control" v-model="latitude">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="longitude" class="col-md-4 control-label">Longitude</label>
 
                             <div class="col-md-6">
-                                <input id="longitude" type="longitude" class="form-control" v-model="longitude" required>
+                                <input id="longitude" type="longitude" class="form-control" v-model="longitude">
                             </div>                           
                         </div>
 
@@ -93,6 +93,42 @@ export default {
     methods: {
         onSubmit(){
             console.log('onsubmit\n', this.name, this.email, this.password, this.password_confirmation, this.latitude, this.longitude)
+            let that = this
+            axios({
+                method: 'post',
+                url: '/web_coding_challenge2/public/api-register',
+                data: {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.password_confirmation,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
+            }).then(function (response) {
+                console.log(response);
+                if(response.data.access_token){
+                    localStorage.setItem('token_type', response.data.token_type)
+                    localStorage.setItem('expires_in', response.data.expires_in)
+                    localStorage.setItem('access_token', response.data.access_token)
+                    localStorage.setItem('refresh_token', response.data.refresh_token)
+                    localStorage.setItem('username', that.username)
+                    localStorage.setItem('saved_in', new Date().getTime())
+                    that.$parent.isAuth = true
+                    that.$parent.user.name = that.name
+
+                    that.name = that.email = that.password = that.password_confirmation = ""
+                    that.latitude = that.longitude = ""
+                    // $('#createLabelModal .modal-backdrop').trigger('click')
+                    $('#register-modal').modal('hide')
+                }
+                else{
+                    // show errors
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         },
         getLocation(){
             console.log('getLocation.')

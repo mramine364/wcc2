@@ -40,7 +40,10 @@ class LoginController extends Controller
 
     public function apiLoginCheck(Request $request){
 
-        // var_dump('hi'); die;
+        return $this->_apiLoginCheck($request->username, $request->password);
+    }
+
+    public function _apiLoginCheck($username, $password){
 
         $http = new \GuzzleHttp\Client();
 
@@ -49,13 +52,12 @@ class LoginController extends Controller
                 'grant_type' => 'password',
                 'client_id' => '2',
                 'client_secret' => 'BQvQIZO6Alfeo9wo0ZlpH7F0f9ffAJs6ZpYFFv64',
-                'username' => $request->username,
-                'password' => $request->password,
+                'username' => $username,
+                'password' => $password,
                 'scope' => '',
             ],
         ]);
 
         return json_decode((string) $response->getBody(), true);
-        // return $response;
     }
 }
