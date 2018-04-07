@@ -67,6 +67,8 @@ export default {
                 localStorage.setItem('expires_in', response.data.expires_in)
                 localStorage.setItem('access_token', response.data.access_token)
                 localStorage.setItem('refresh_token', response.data.refresh_token)
+                localStorage.setItem('username', that.username)
+                localStorage.setItem('saved_in', new Date().getTime())
                 that.$parent.isAuth = true
                 that.$parent.user.name = that.username
                 that.password = that.username = ""
