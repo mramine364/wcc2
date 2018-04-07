@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -35,5 +36,26 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function apiLoginCheck(Request $request){
+
+        // var_dump('hi'); die;
+
+        $http = new \GuzzleHttp\Client();
+
+        $response = $http->post('http://localhost/web_coding_challenge2/public/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => '2',
+                'client_secret' => 'BQvQIZO6Alfeo9wo0ZlpH7F0f9ffAJs6ZpYFFv64',
+                'username' => $request->username,
+                'password' => $request->password,
+                'scope' => '',
+            ],
+        ]);
+
+        return json_decode((string) $response->getBody(), true);
+        // return $response;
     }
 }

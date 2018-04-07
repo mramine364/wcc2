@@ -53,6 +53,27 @@ export default {
     methods: {
         onSubmit(){
             console.log('onsubmit', this.username, this.password)
+            let that = this
+            axios({
+                method: 'post',
+                url: '/web_coding_challenge2/public/api-login-check',
+                data: {
+                    username: this.username,
+                    password: this.password
+                }
+            }).then(function (response) {
+                console.log(response);
+                localStorage.setItem('token_type', response.data.token_type)
+                localStorage.setItem('expires_in', response.data.expires_in)
+                localStorage.setItem('access_token', response.data.access_token)
+                localStorage.setItem('refresh_token', response.data.refresh_token)
+                that.$parent.isAuth = true
+                that.$parent.user.name = that.username
+                that.password = that.username = ""
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         }
     }
 }
