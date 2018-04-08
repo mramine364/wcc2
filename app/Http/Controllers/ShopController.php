@@ -25,8 +25,6 @@ class ShopController extends Controller
 
     /**
      * Return Nearby Shops.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function nearby(){
         /**
@@ -52,5 +50,16 @@ class ShopController extends Controller
             ->orderByRaw("(latitude-$lat)*(latitude-$lat) + (longitude-$lon)*(longitude-$lon)")
             ->paginate($this->shops_per_page)
         ;
+    }
+
+    /**
+    * Return preferred shops
+    */
+    public function preferred(){
+        
+        return DB::table('shops')
+            ->join('shop_users', 'shops.id', '=', 'shop_users.shop_id')
+            ->where('shop_users.like', '=', 1)
+            ->paginate($this->shops_per_page);
     }
 }
