@@ -75,6 +75,25 @@
                 }
             }
         },
+        created() {
+            console.log('myapp created')
+            let tt = localStorage.getItem('token_type')
+            let ei = localStorage.getItem('expires_in')
+            let at = localStorage.getItem('access_token')
+            let rt = localStorage.getItem('refresh_token')
+            let un = localStorage.getItem('username')
+            let si = localStorage.getItem('saved_in')
+            if(tt && ei && at && rt && un && si){
+                if((new Date).getTime()-si>ei){
+                    // token expired
+                    console.log('token expired')
+                }
+                else{
+                    this.isAuth = true
+                    this.user.name = un
+                }
+            }
+        },
         methods: {
             showLoginForm(){
                 console.log('showLoginForm')

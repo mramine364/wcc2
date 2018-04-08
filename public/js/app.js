@@ -43299,6 +43299,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
     },
+    created: function created() {
+        console.log('myapp created');
+        var tt = localStorage.getItem('token_type');
+        var ei = localStorage.getItem('expires_in');
+        var at = localStorage.getItem('access_token');
+        var rt = localStorage.getItem('refresh_token');
+        var un = localStorage.getItem('username');
+        var si = localStorage.getItem('saved_in');
+        if (tt && ei && at && rt && un && si) {
+            if (new Date().getTime() - si > ei) {
+                // token expired
+                console.log('token expired');
+            } else {
+                this.isAuth = true;
+                this.user.name = un;
+            }
+        }
+    },
 
     methods: {
         showLoginForm: function showLoginForm() {
@@ -43937,7 +43955,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     localStorage.setItem('expires_in', response.data.expires_in);
                     localStorage.setItem('access_token', response.data.access_token);
                     localStorage.setItem('refresh_token', response.data.refresh_token);
-                    localStorage.setItem('username', that.username);
+                    localStorage.setItem('username', that.name);
                     localStorage.setItem('saved_in', new Date().getTime());
                     that.$parent.isAuth = true;
                     that.$parent.user.name = that.name;
