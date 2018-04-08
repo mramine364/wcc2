@@ -54,6 +54,9 @@
     </nav>
     <login></login>
     <register></register>
+    <div class="container">
+        <shops v-if="shops" v-bind:shops="shops"></shops>
+    </div>
 </div>
 </template>
 
@@ -72,11 +75,14 @@
                     email: null,
                     latitude: null,
                     longitude: null
-                }
+                },
+                shops: null
             }
         },
         created() {
             console.log('myapp created')
+            let that = this
+            // Authentication
             let tt = localStorage.getItem('token_type')
             let ei = localStorage.getItem('expires_in')
             let at = localStorage.getItem('access_token')
@@ -93,6 +99,20 @@
                     this.user.name = un
                 }
             }
+            // Get nearby shops
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/nearby',
+                headers: {
+                    Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
+                }
+            }).then(function (response) {
+                console.log(response)
+                that.shops = response.data.data
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
         },
         methods: {
             showLoginForm(){

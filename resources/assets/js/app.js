@@ -18,6 +18,8 @@ window.Vue = require('vue');
 Vue.component('myapp', require('./components/myApp.vue'));
 Vue.component('login', require('./components/Login.vue'));
 Vue.component('register', require('./components/Register.vue'));
+Vue.component('shops', require('./components/Shops.vue'));
+Vue.component('shop', require('./components/Shop.vue'));
 
 const app = new Vue({
     el: '#app'
