@@ -43308,7 +43308,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var un = localStorage.getItem('username');
         var si = localStorage.getItem('saved_in');
         if (tt && ei && at && rt && un && si) {
-            if (new Date().getTime() - si > ei) {
+            if (new Date().getTime() - si > ei * 1000) {
                 // token expired
                 console.log('token expired');
             } else {

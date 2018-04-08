@@ -84,7 +84,7 @@
             let un = localStorage.getItem('username')
             let si = localStorage.getItem('saved_in')
             if(tt && ei && at && rt && un && si){
-                if((new Date).getTime()-si>ei){
+                if((new Date).getTime()-si>ei*1000){
                     // token expired
                     console.log('token expired')
                 }
