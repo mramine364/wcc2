@@ -62,4 +62,28 @@ class ShopController extends Controller
             ->where('shop_users.like', '=', 1)
             ->paginate($this->shops_per_page);
     }
+
+    /**
+    * Like a shop
+    */
+    public function like($shopId){
+
+        $shop_user = ShopUser::firstOrNew(['user_id' => $Auth::user()->id, 'shop_id' => $shopId]);
+        $shop_user->like = 1;
+        $shop_user->save();
+
+        return ['success' => true];
+    }
+
+    /**
+    * Dislike a shop
+    */
+    public function dislike($shopId){
+        
+        $shop_user = ShopUser::firstOrNew(['user_id' => $Auth::user()->id, 'shop_id' => $shopId]);
+        $shop_user->like = -1;
+        $shop_user->save();
+
+        return ['success' => true];
+    }
 }

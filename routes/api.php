@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('nearby', 'ShopController@nearby');
 Route::get('preferred', 'ShopController@preferred');
+Route::get('like/{shopId}', 'ShopController@like');
+Route::get('dislike/{shopId}', 'ShopController@dislike');
