@@ -22,12 +22,14 @@
                 <small class="mypanel-subtitle" v-text="shop.city"></small>
             </div>
             <div class="mypanel-img-container">
-                <img src="http://placehold.it/150x150" 
+                <img :src="shop.picture" 
                 class="img-responsive" alt="Responsive image">
             </div>
             <div>
-                <a class="btn btn-danger" href="#" role="button">Dislike</a>
-                <a class="btn btn-success" href="#" role="button">Like</a>
+                <a v-on:click="dislike(shop.id)"
+                class="btn btn-danger" href="#" role="button">Dislike</a>
+                <a v-on:click="like(shop.id)"
+                class="btn btn-success" href="#" role="button">Like</a>
             </div>
         </div>
     </div>
@@ -45,7 +47,42 @@ export default {
         console.log(this.shop)
     },
     methods: {
-        
+        like(shopId){
+            console.log('like', shopId)
+            let that = this
+            // Liking a shop
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/like/'+shopId,
+                headers: {
+                    Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
+                }
+            }).then(function (response) {
+                console.log(response)
+                that.$parent.$parent.nearByShops()
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+        },
+        dislike(shopId){
+            console.log('dislike', shopId)
+            let that = this
+            // Disliking a shop
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/dislike/'+shopId,
+                headers: {
+                    Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
+                }
+            }).then(function (response) {
+                console.log(response)
+                that.$parent.$parent.nearByShops()
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+        }
     }
 }
 </script>

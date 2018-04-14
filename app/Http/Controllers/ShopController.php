@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use App\ShopUser;
 
 class ShopController extends Controller
 {
@@ -68,7 +69,7 @@ class ShopController extends Controller
     */
     public function like($shopId){
 
-        $shop_user = ShopUser::firstOrNew(['user_id' => $Auth::user()->id, 'shop_id' => $shopId]);
+        $shop_user = ShopUser::firstOrNew(['user_id' => Auth::user()->id, 'shop_id' => $shopId]);
         $shop_user->like = 1;
         $shop_user->save();
 
@@ -80,7 +81,7 @@ class ShopController extends Controller
     */
     public function dislike($shopId){
         
-        $shop_user = ShopUser::firstOrNew(['user_id' => $Auth::user()->id, 'shop_id' => $shopId]);
+        $shop_user = ShopUser::firstOrNew(['user_id' => Auth::user()->id, 'shop_id' => $shopId]);
         $shop_user->like = -1;
         $shop_user->save();
 

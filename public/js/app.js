@@ -45010,6 +45010,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['shop'],
@@ -45021,7 +45023,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(this.shop);
     },
 
-    methods: {}
+    methods: {
+        like: function like(shopId) {
+            console.log('like', shopId);
+            var that = this;
+            // Liking a shop
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/like/' + shopId,
+                headers: {
+                    Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
+                }
+            }).then(function (response) {
+                console.log(response);
+                that.$parent.$parent.nearByShops();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        dislike: function dislike(shopId) {
+            console.log('dislike', shopId);
+            var that = this;
+            // Disliking a shop
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/dislike/' + shopId,
+                headers: {
+                    Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
+                }
+            }).then(function (response) {
+                console.log(response);
+                that.$parent.$parent.nearByShops();
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -45046,46 +45083,46 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "mypanel-img-container" }, [
+        _c("img", {
+          staticClass: "img-responsive",
+          attrs: { src: _vm.shop.picture, alt: "Responsive image" }
+        })
+      ]),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-danger",
+            attrs: { href: "#", role: "button" },
+            on: {
+              click: function($event) {
+                _vm.dislike(_vm.shop.id)
+              }
+            }
+          },
+          [_vm._v("Dislike")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-success",
+            attrs: { href: "#", role: "button" },
+            on: {
+              click: function($event) {
+                _vm.like(_vm.shop.id)
+              }
+            }
+          },
+          [_vm._v("Like")]
+        )
+      ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mypanel-img-container" }, [
-      _c("img", {
-        staticClass: "img-responsive",
-        attrs: { src: "http://placehold.it/150x150", alt: "Responsive image" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c(
-        "a",
-        { staticClass: "btn btn-danger", attrs: { href: "#", role: "button" } },
-        [_vm._v("Dislike")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-success",
-          attrs: { href: "#", role: "button" }
-        },
-        [_vm._v("Like")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
