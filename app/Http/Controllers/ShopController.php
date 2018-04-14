@@ -88,4 +88,16 @@ class ShopController extends Controller
 
         return ['success' => true];
     }
+
+    /**
+    * UnLike a shop
+    */
+    public function unlike($shopId){
+
+        $shop_user = ShopUser::where('user_id', Auth::user()->id) ->where('shop_id', $shopId)->first();
+        if($shop_user)
+            $shop_user->delete();
+
+        return ['success' => true];
+    }
 }

@@ -45012,6 +45012,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['shop'],
@@ -45057,6 +45059,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+        unlike: function unlike(shopId) {
+            console.log('unlike', shopId);
+            var that = this;
+            // Disliking a shop
+            axios({
+                method: 'get',
+                url: '/web_coding_challenge2/public/api/unlike/' + shopId,
+                headers: {
+                    Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
+                }
+            }).then(function (response) {
+                console.log(response);
+                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     }
 });
@@ -45091,22 +45110,6 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", [
-        _vm.shop.like != -1
-          ? _c(
-              "a",
-              {
-                staticClass: "btn btn-danger",
-                attrs: { href: "#", role: "button" },
-                on: {
-                  click: function($event) {
-                    _vm.dislike(_vm.shop.id)
-                  }
-                }
-              },
-              [_vm._v("Dislike")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
         _vm.shop.like != 1
           ? _c(
               "a",
@@ -45120,6 +45123,38 @@ var render = function() {
                 }
               },
               [_vm._v("Like")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.shop.like == 1
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-success",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.unlike(_vm.shop.id)
+                  }
+                }
+              },
+              [_vm._v("Unlike")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.shop.like != -1
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.dislike(_vm.shop.id)
+                  }
+                }
+              },
+              [_vm._v("Dislike")]
             )
           : _vm._e()
       ])

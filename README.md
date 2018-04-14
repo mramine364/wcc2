@@ -16,4 +16,4 @@
     * [x] Acceptance criteria: liked shops shouldn’t be displayed on the main page
 * [x] As a User, I can dislike a shop, so it won’t be displayed within “Nearby Shops” list during the next 2 hours
 * [ ] As a User, I can display the list of preferred shops
-* [ ] As a User, I can remove a shop from my preferred shops list
+* [X] As a User, I can remove a shop from my preferred shops list
