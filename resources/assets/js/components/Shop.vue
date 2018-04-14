@@ -61,10 +61,7 @@ export default {
                 }
             }).then(function (response) {
                 console.log(response)
-                if(that.$parent.$parent.iactive==1)
-                    that.$parent.$parent.preferredShops()
-                else
-                    that.$parent.$parent.nearByShops()
+                that.$parent.$parent.refreshPage()
             })
             .catch(function (error) {
                 console.log(error)
@@ -82,10 +79,7 @@ export default {
                 }
             }).then(function (response) {
                 console.log(response)
-                if(that.$parent.$parent.iactive==1)
-                    that.$parent.$parent.preferredShops()
-                else
-                    that.$parent.$parent.nearByShops()
+                that.$parent.$parent.refreshPage()
             })
             .catch(function (error) {
                 console.log(error)
@@ -103,10 +97,7 @@ export default {
                 }
             }).then(function (response) {
                 console.log(response)
-                if(that.$parent.$parent.iactive==1)
-                    that.$parent.$parent.preferredShops()
-                else
-                    that.$parent.$parent.nearByShops()
+                that.$parent.$parent.refreshPage()
             })
             .catch(function (error) {
                 console.log(error)

@@ -63,6 +63,25 @@
     <div class="container">
         <shops v-if="shops" v-bind:shops="shops"></shops>
     </div>
+    <nav aria-label="paginationLabel">
+        <div class="container">
+            <ul class="pager">
+                <li :class="{disabled: pagination.prev_page==null}">
+                    <a v-on:click="getShops(pagination.prev_page)"
+                    href="#">Previous</a>
+                </li>
+                <li class="disabled">
+                    <a href="#">
+                        Page {{pagination.i_curr_page}} of {{pagination.total_pages}}
+                    </a>
+                </li>
+                <li :class="{disabled: pagination.next_page==null}">
+                    <a v-on:click="getShops(pagination.next_page)"
+                    href="#">Next</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 </template>
 
@@ -83,7 +102,14 @@
                     latitude: null,
                     longitude: null
                 },
-                shops: null
+                shops: null,
+                pagination: {
+                    prev_page: null,
+                    next_page: null,
+                    curr_page: null,
+                    i_curr_page: 0,
+                    total_pages: 0
+                }
             }
         },
         created() {
@@ -118,41 +144,40 @@
             },
             nearByShops(){
                 console.log('nearByShops')
-                let that = this
                 // Get nearby shops
-                axios({
-                    method: 'get',
-                    url: '/web_coding_challenge2/public/api/nearby',
-                    headers: {
-                        Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
-                    }
-                }).then(function (response) {
-                    console.log(response)
-                    that.shops = response.data.data
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
+                this.getShops('/web_coding_challenge2/public/api/nearby')
                 this.iactive = 0
             },
             preferredShops(){
                 console.log('preferredShops')
-                let that = this
                 // Get preferred shops
+                this.getShops('/web_coding_challenge2/public/api/preferred')
+                this.iactive = 1
+            },
+            getShops(shopsUrl){
+                if(!shopsUrl) return
+                let that = this
                 axios({
                     method: 'get',
-                    url: '/web_coding_challenge2/public/api/preferred',
+                    url: shopsUrl,
                     headers: {
                         Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
                     }
                 }).then(function (response) {
                     console.log(response)
                     that.shops = response.data.data
+                    that.pagination.prev_page = response.data.prev_page_url
+                    that.pagination.next_page = response.data.next_page_url
+                    that.pagination.curr_page = response.data.path+"?page="+response.data.current_page
+                    that.pagination.i_curr_page = response.data.current_page
+                    that.pagination.total_pages = response.data.last_page
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
-                this.iactive = 1
+            },
+            refreshPage(){
+                this.getShops(this.pagination.curr_page)
             }
         }
     }

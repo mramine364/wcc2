@@ -43602,6 +43602,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
@@ -43619,7 +43638,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 latitude: null,
                 longitude: null
             },
-            shops: null
+            shops: null,
+            pagination: {
+                prev_page: null,
+                next_page: null,
+                curr_page: null,
+                i_curr_page: 0,
+                total_pages: 0
+            }
         };
     },
     created: function created() {
@@ -43654,39 +43680,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         nearByShops: function nearByShops() {
             console.log('nearByShops');
-            var that = this;
             // Get nearby shops
-            axios({
-                method: 'get',
-                url: '/web_coding_challenge2/public/api/nearby',
-                headers: {
-                    Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
-                }
-            }).then(function (response) {
-                console.log(response);
-                that.shops = response.data.data;
-            }).catch(function (error) {
-                console.log(error);
-            });
+            this.getShops('/web_coding_challenge2/public/api/nearby');
             this.iactive = 0;
         },
         preferredShops: function preferredShops() {
             console.log('preferredShops');
-            var that = this;
             // Get preferred shops
+            this.getShops('/web_coding_challenge2/public/api/preferred');
+            this.iactive = 1;
+        },
+        getShops: function getShops(shopsUrl) {
+            if (!shopsUrl) return;
+            var that = this;
             axios({
                 method: 'get',
-                url: '/web_coding_challenge2/public/api/preferred',
+                url: shopsUrl,
                 headers: {
                     Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('access_token')
                 }
             }).then(function (response) {
                 console.log(response);
                 that.shops = response.data.data;
+                that.pagination.prev_page = response.data.prev_page_url;
+                that.pagination.next_page = response.data.next_page_url;
+                that.pagination.curr_page = response.data.path + "?page=" + response.data.current_page;
+                that.pagination.i_curr_page = response.data.current_page;
+                that.pagination.total_pages = response.data.last_page;
             }).catch(function (error) {
                 console.log(error);
             });
-            this.iactive = 1;
+        },
+        refreshPage: function refreshPage() {
+            this.getShops(this.pagination.curr_page);
         }
     }
 });
@@ -43815,7 +43841,63 @@ var render = function() {
         { staticClass: "container" },
         [_vm.shops ? _c("shops", { attrs: { shops: _vm.shops } }) : _vm._e()],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("nav", { attrs: { "aria-label": "paginationLabel" } }, [
+        _c("div", { staticClass: "container" }, [
+          _c("ul", { staticClass: "pager" }, [
+            _c(
+              "li",
+              { class: { disabled: _vm.pagination.prev_page == null } },
+              [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.getShops(_vm.pagination.prev_page)
+                      }
+                    }
+                  },
+                  [_vm._v("Previous")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("li", { staticClass: "disabled" }, [
+              _c("a", { attrs: { href: "#" } }, [
+                _vm._v(
+                  "\r\n                        Page " +
+                    _vm._s(_vm.pagination.i_curr_page) +
+                    " of " +
+                    _vm._s(_vm.pagination.total_pages) +
+                    "\r\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "li",
+              { class: { disabled: _vm.pagination.next_page == null } },
+              [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.getShops(_vm.pagination.next_page)
+                      }
+                    }
+                  },
+                  [_vm._v("Next")]
+                )
+              ]
+            )
+          ])
+        ])
+      ])
     ],
     1
   )
@@ -45038,7 +45120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (response) {
                 console.log(response);
-                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
+                that.$parent.$parent.refreshPage();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -45055,7 +45137,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (response) {
                 console.log(response);
-                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
+                that.$parent.$parent.refreshPage();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -45072,7 +45154,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (response) {
                 console.log(response);
-                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
+                that.$parent.$parent.refreshPage();
             }).catch(function (error) {
                 console.log(error);
             });
