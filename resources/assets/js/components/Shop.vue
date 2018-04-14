@@ -26,9 +26,9 @@
                 class="img-responsive" alt="Responsive image">
             </div>
             <div>
-                <a v-on:click="dislike(shop.id)"
+                <a v-if="shop.like!=-1" v-on:click="dislike(shop.id)"
                 class="btn btn-danger" href="#" role="button">Dislike</a>
-                <a v-on:click="like(shop.id)"
+                <a v-if="shop.like!=1" v-on:click="like(shop.id)"
                 class="btn btn-success" href="#" role="button">Like</a>
             </div>
         </div>
@@ -59,7 +59,10 @@ export default {
                 }
             }).then(function (response) {
                 console.log(response)
-                that.$parent.$parent.nearByShops()
+                if(that.$parent.$parent.iactive==1)
+                    that.$parent.$parent.preferredShops()
+                else
+                    that.$parent.$parent.nearByShops()
             })
             .catch(function (error) {
                 console.log(error)
@@ -77,7 +80,10 @@ export default {
                 }
             }).then(function (response) {
                 console.log(response)
-                that.$parent.$parent.nearByShops()
+                if(that.$parent.$parent.iactive==1)
+                    that.$parent.$parent.preferredShops()
+                else
+                    that.$parent.$parent.nearByShops()
             })
             .catch(function (error) {
                 console.log(error)

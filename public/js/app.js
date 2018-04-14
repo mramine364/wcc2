@@ -45036,7 +45036,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (response) {
                 console.log(response);
-                that.$parent.$parent.nearByShops();
+                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -45053,7 +45053,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             }).then(function (response) {
                 console.log(response);
-                that.$parent.$parent.nearByShops();
+                if (that.$parent.$parent.iactive == 1) that.$parent.$parent.preferredShops();else that.$parent.$parent.nearByShops();
             }).catch(function (error) {
                 console.log(error);
             });
@@ -45091,33 +45091,37 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-danger",
-            attrs: { href: "#", role: "button" },
-            on: {
-              click: function($event) {
-                _vm.dislike(_vm.shop.id)
-              }
-            }
-          },
-          [_vm._v("Dislike")]
-        ),
+        _vm.shop.like != -1
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.dislike(_vm.shop.id)
+                  }
+                }
+              },
+              [_vm._v("Dislike")]
+            )
+          : _vm._e(),
         _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-success",
-            attrs: { href: "#", role: "button" },
-            on: {
-              click: function($event) {
-                _vm.like(_vm.shop.id)
-              }
-            }
-          },
-          [_vm._v("Like")]
-        )
+        _vm.shop.like != 1
+          ? _c(
+              "a",
+              {
+                staticClass: "btn btn-success",
+                attrs: { href: "#", role: "button" },
+                on: {
+                  click: function($event) {
+                    _vm.like(_vm.shop.id)
+                  }
+                }
+              },
+              [_vm._v("Like")]
+            )
+          : _vm._e()
       ])
     ])
   ])
