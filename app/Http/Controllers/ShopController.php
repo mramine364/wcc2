@@ -38,7 +38,7 @@ class ShopController extends Controller
          * Selecting nearby shops
          */
         return DB::table('shops')
-            ->select('shops.*', 'shops.id as id')
+            ->select('shops.*', 'shops.id as id', 'shop_users.like as like')
             // liked shops shouldn’t be displayed on the main page
             // disliked shops are not displayed during the next 2 hours
             ->leftJoin('shop_users', 'shops.id', '=', 'shop_users.shop_id')
@@ -59,6 +59,7 @@ class ShopController extends Controller
     public function preferred(){
         
         return DB::table('shops')
+            ->select('shops.*', 'shops.id as id', 'shop_users.like as like')
             ->join('shop_users', 'shops.id', '=', 'shop_users.shop_id')
             ->where('shop_users.like', '=', 1)
             ->paginate($this->shops_per_page);
