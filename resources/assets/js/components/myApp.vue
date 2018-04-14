@@ -35,6 +35,12 @@
                         <a href="#" v-on:click="showRegistrationForm">Register</a>
                     </li>
 
+                    <li v-if="isAuth" v-bind:class="{active: iactive==0}">
+                        <a href="#" v-on:click="nearByShops">Near by shops</a>
+                    </li>
+                    <li v-if="isAuth" v-bind:class="{active: iactive==1}">
+                        <a href="#" v-on:click="preferredShops">Preferred shops</a>
+                    </li>
                     <li class="dropdown" v-if="isAuth">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                             <span v-text="user.name"></span>
@@ -69,6 +75,7 @@
         data() {
             return {
                 isAuth: false,
+                iactive: 0,
                 user: {
                     id: null,
                     name: null,
@@ -81,7 +88,6 @@
         },
         created() {
             console.log('myapp created')
-            let that = this
             // Authentication
             let tt = localStorage.getItem('token_type')
             let ei = localStorage.getItem('expires_in')
@@ -99,20 +105,7 @@
                     this.user.name = un
                 }
             }
-            // Get nearby shops
-            axios({
-                method: 'get',
-                url: '/web_coding_challenge2/public/api/nearby',
-                headers: {
-                    Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
-                }
-            }).then(function (response) {
-                console.log(response)
-                that.shops = response.data.data
-            })
-            .catch(function (error) {
-                console.log(error)
-            });
+            this.nearByShops()
         },
         methods: {
             showLoginForm(){
@@ -122,6 +115,44 @@
             showRegistrationForm(){
                 console.log('showRegistrationForm')
                 $('#register-modal').modal('show')
+            },
+            nearByShops(){
+                console.log('nearByShops')
+                let that = this
+                // Get nearby shops
+                axios({
+                    method: 'get',
+                    url: '/web_coding_challenge2/public/api/nearby',
+                    headers: {
+                        Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
+                    }
+                }).then(function (response) {
+                    console.log(response)
+                    that.shops = response.data.data
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                this.iactive = 0
+            },
+            preferredShops(){
+                console.log('preferredShops')
+                let that = this
+                // Get preferred shops
+                axios({
+                    method: 'get',
+                    url: '/web_coding_challenge2/public/api/preferred',
+                    headers: {
+                        Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('access_token')}`
+                    }
+                }).then(function (response) {
+                    console.log(response)
+                    that.shops = response.data.data
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+                this.iactive = 1
             }
         }
     }
